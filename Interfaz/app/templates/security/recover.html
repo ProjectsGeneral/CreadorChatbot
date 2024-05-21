@@ -1,0 +1,65 @@
+{% extends './base.html' %} 
+{%block title%}Recuperar{% endblock %} 
+
+{% block body %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/login-register.css')}}"
+/>
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div
+    class="card p-4 shadow-sm border-0"
+    style="
+      max-width: 400px;
+      width: 100%;
+      background-color: #56385a;
+      box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+    "
+  >
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <img src="https://via.placeholder.com/100" alt="Logo" class="mb-3" />
+        <h3 class="card-title text-white">{{data.titulo}}</h3>
+      </div>
+      <form>
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group mb-2">
+              <label for="email" class="text-white">{{data.Correo}}</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="correo"
+                value="{{data.dataCorreo}}"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group mb-2">
+              <label for="password" class="text-white">{{data.Password}}</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center">
+          <button
+            type="submit"
+            class="col-12 col-md-4 btn btn-warning btn-block text-black"
+          >
+            Registrar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

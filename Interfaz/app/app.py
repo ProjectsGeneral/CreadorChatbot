@@ -19,9 +19,11 @@ def index():
     data = {
         'titulo':'Iniciar Sesion',
         'Correo':'Correo electronico',
-        'Password':'Contraseña'
+        'Password':'Contraseña',
+        'InngresaCorreo':'Ingresa tu Correo electronico',
+        'IngresaPassword':'Ingresa tu Contraseña',
     }
-    return render_template('login/index.html', data=data)
+    return render_template('security/index.html', data=data)
 
 @app.route('/registrarse')
 def registrarse():
@@ -30,35 +32,38 @@ def registrarse():
         'Nombre':'Nombre',
         'Apellidos':'Apellidos',
         'Correo':'Correo electronico',
+        'Empresa': 'Nombre de la Empresa',
+        'Cargo': 'Ingresa su cargo',
         'Password':'Contraseña',
-        'PasswordRepeat':'Repite la Contraseña'
+        'PasswordRepeat':'Repite la Contraseña',
+        
     }
-    return render_template('login/register.html',data=data)
+    return render_template('security/register.html',data=data)
+
+@app.route('/validar')
+def validar():
+    data = {
+        'titulo':'Ingresa un correo electronico valido',
+        'Correo':'Correo electronico',
+        'Codigo':'Codigo',
+    }
+    return render_template('security/validate.html',data=data)
+
+@app.route('/recuperar/<dataCorreo>')
+def recuperar(dataCorreo):
+    data = {
+        'titulo':'Recuperar Contraseña',
+        'Correo':'Correo electronico',
+        'dataCorreo': dataCorreo,
+        'Password':'Ingresa una nueva contraseña',
+    }
+    return render_template('security/recover.html',data=data)
+
+
 
 @app.route('/inicio')
 def inicio():
-    return render_template('vistas/body/inicio.html')
-
-@app.route('/csv')
-def subir_csv():
-    return render_template('vistas/body/subir-csv.html')
-
-@app.route('/exportar')
-def exportar():
-    return render_template('vistas/body/exportar.html')
-
-@app.route('/ajustes')
-def ajustes():
-    return render_template('vistas/body/ajustes.html')
-
-
-@app.route('/crear-plan')
-def crearplan():
-    return render_template('vistas/crear-plan.html')
-
-@app.route('/crear-unidad-estrategica')
-def crearunidadestrategica():
-    return render_template('vistas/crear-unidad-estrategica.html')
+    return render_template('views/home.html')
 
 
 
