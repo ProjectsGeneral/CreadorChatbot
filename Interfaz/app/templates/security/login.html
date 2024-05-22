@@ -1,0 +1,60 @@
+{% extends './base.html' %} 
+{%block title%}Login{% endblock %} 
+
+{% block customCSS %}
+<link
+rel="stylesheet"
+href="{{ url_for('static', filename='css/login-register.css')}}"
+/>
+{% endblock %}
+
+{% block body %}
+
+
+<div class="d-flex align-items-center justify-content-center vh-100" >
+  <div class="card p-4 shadow-sm border-0" style="max-width: 400px; width: 100%; background-color: #56385a; box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);" >
+      <div class="card-body" >
+          <div class="text-center mb-4">
+              <img src="https://via.placeholder.com/100" alt="Logo" class="mb-3">
+              <h3 class="card-title text-white">{{data.titulo}}</h3>
+          </div>
+          <form action="/login" method="POST">
+            {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+            <br/>
+            {% for message in messages %}
+            <div class="alert alert-primary alert-dismissible" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% endwith %}
+              <div class="form-group mb-2">
+                  <label for="email" class="text-white">{{data.Correo}}</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="{{data.InngresaCorreo}}" required>
+              </div>
+              <div class="form-group mb-2">
+                  <label for="password" class="text-white">{{data.Password}}</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="{{data.IngresaPassword}}" required>
+              </div>
+              <div class="form-group form-check mb-2">
+                  <input type="checkbox" class="form-check-input" id="rememberMe">
+                  <label class="form-check-label text-white" for="rememberMe">Recordarme</label>
+              </div>
+              <button type="submit" class=" col-12 btn btn-warning btn-block text-black">Ingresar</button>
+          </form>
+          <div class="text-center mt-3 d-flex justify-content-center">
+              <a class="text-warning" href="{{ url_for('validar') }}">Olvidaste tu contraseña?</a>
+          </div>
+          <div class="text-center mt-2">
+              <span class="text-white">No tienes una cuenta? <a class="text-warning" href="{{ url_for('registrarse') }}">Registrate aqui</a></span>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

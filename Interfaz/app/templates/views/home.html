@@ -2,11 +2,15 @@
 {% block title %}Home{% endblock %} 
 {% block body %}
 <div class="row p-0 m-0">
-  <div class="col-12 p-0">{% include './views/components/navbar.html' %}</div>
-  <div class="col-12"></div>
+    <div class="col-2 p-0">
+      {% include './views/components/navbar.html' %}
+    </div>
+    <div class="col-10">
+      <div class="containner bg-primry">
+        <p> corrido {{current_user.Nombre}} , {{current_user.NombreEmpresa}}</p>
+      </div>
+  </div>
+  
 </div>
 
-<div class="col-12">
-  <div class=""></div>
-</div>
 {% endblock %}

@@ -1,21 +1,33 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect,request,flash
+from flask_mysqldb import MySQL
+from flask_login import LoginManager,login_user,logout_user,login_required
+
+from config import config
+
+#modelos
+from models.ModelUser import ModelLoginUser
+
+#entities
+from models.entities.User import LoginUser
 
 app = Flask(__name__)
 
-# antes de la peticion
-@app.before_request
-def before_request():
-    print("Antes de la peticion..")
+db = MySQL(app)
 
-# despues de la peticion
-@app.after_request
-def after_request(response):
-    print("Despues de la peticion..")
-    return response
+login_manager_app = LoginManager(app)
 
-@app.route('/login')
+@login_manager_app.user_loader
+def load_user(id):
+    return ModelLoginUser.get_by_id(db,id)
+
+
+
+@app.route('/')
 def index():
-    # return "<h1>hola</h1>"
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     data = {
         'titulo':'Iniciar Sesion',
         'Correo':'Correo electronico',
@@ -23,7 +35,27 @@ def index():
         'InngresaCorreo':'Ingresa tu Correo electronico',
         'IngresaPassword':'Ingresa tu Contraseña',
     }
-    return render_template('security/index.html', data=data)
+    # return "<h1>hola</h1>"
+    if request.method == 'POST':
+        # print(request.form['email'])
+        # print(request.form['password'])
+        user = LoginUser(0, request.form['email'], request.form['password'])
+        logged_user = ModelLoginUser.login(db, user)
+
+        if logged_user != None:
+            if logged_user.Password:
+                login_user(logged_user)
+                return redirect(url_for('inicio'))
+            else:
+                flash("Contraseña Invalida")
+                return render_template('security/login.html', data=data)
+        else:
+            flash("Usuario no encontrado")
+            return render_template('security/login.html', data=data)
+    else:
+        return render_template('security/login.html', data=data)
+    
+    
 
 @app.route('/registrarse')
 def registrarse():
@@ -95,5 +127,18 @@ def pagina_no_encontrada(error):
 
 if __name__ == '__main__':
     app.add_url_rule('/query_string', view_func=query_string)
+    app.config.from_object(config['development'])
     app.register_error_handler(404, pagina_no_encontrada)
     app.run(debug=True,port=5000)
+
+
+# antes de la peticion
+# @app.before_request
+# def before_request():
+#     print("Antes de la peticion..")
+
+# despues de la peticion
+# @app.after_request
+# def after_request(response):
+#     print("Despues de la peticion..")
+#     return response 
