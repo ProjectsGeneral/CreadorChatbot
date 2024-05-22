@@ -4,7 +4,14 @@
 |------------------------------|------------|
 | Chambilla Zuñiga, Josue      | 2020067575 |
 | Rivera Mendoza, Jhonny       | 2020067144 |
-
+### Herramientas y lenguajes:
+#### Servicio WEB
+   - Python con flask.
+   - MYSQL.
+#### Servicio Creador de bots
+   - C# con webapi .NET 8.
+   - Paquete de chatbot whatsapp.
+   - Docker (para cada servicio incluyendo el bot).
 ### Metodologia
 Para este proyecto se eligio la metodologia SCRUM, no se aplico al 100%, ya que aun estamos en etapa de recoleccion.
 ## Avance Semana 1:
@@ -51,3 +58,15 @@ Se fue avanzando el modelo a usar para la creacion de los chatbots
 - Segundo modelo para la creacion de chatbots
 ![alt text](/img/image-7.png)
 ## Avance Semana 3:
+
+Esta semana se avanzo con los diagramas y se definio la estructura del proyecto final.
+
+#### Casos de uso:
+![alt text](image-2.png)
+#### Estructura de servicios y formato del formulario
+![alt text](image-1.png)
+![alt text](image.png)
+
+#### Diagrama C4
+##### Contexto
+![alt text](image-3.png)
