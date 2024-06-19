@@ -1,25 +1,11 @@
 from flask import Flask, render_template, request, url_for, redirect,request,flash
 from flask_mysqldb import MySQL
-from flask_login import LoginManager,login_user,logout_user,login_required
 
 from config import config
-
-#modelos
-from models.ModelUser import ModelLoginUser
-
-#entities
-from models.entities.User import LoginUser
 
 app = Flask(__name__)
 
 db = MySQL(app)
-
-login_manager_app = LoginManager(app)
-
-@login_manager_app.user_loader
-def load_user(id):
-    return ModelLoginUser.get_by_id(db,id)
-
 
 
 @app.route('/')
@@ -35,25 +21,7 @@ def login():
         'InngresaCorreo':'Ingresa tu Correo electronico',
         'IngresaPassword':'Ingresa tu Contraseña',
     }
-    # return "<h1>hola</h1>"
-    if request.method == 'POST':
-        # print(request.form['email'])
-        # print(request.form['password'])
-        user = LoginUser(0, request.form['email'], request.form['password'])
-        logged_user = ModelLoginUser.login(db, user)
-
-        if logged_user != None:
-            if logged_user.Password:
-                login_user(logged_user)
-                return redirect(url_for('inicio'))
-            else:
-                flash("Contraseña Invalida")
-                return render_template('security/login.html', data=data)
-        else:
-            flash("Usuario no encontrado")
-            return render_template('security/login.html', data=data)
-    else:
-        return render_template('security/login.html', data=data)
+    return render_template('security/login.html', data=data)
     
     
 
