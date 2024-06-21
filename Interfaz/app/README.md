@@ -18,10 +18,11 @@ Your shell prompt will change to show the name of the activated environment.
 
 Install Flask Within the activated environment, use the following command to install Flask:
 
- pip install Flask
- pip install flask-mysqldb
- pip install flask-login
- pip install flask-WTF
+pip install Flask
+pip install flask-mysqldb
+pip install flask-login
+pip install flask-WTF
+pip install bcrypt
 
 
 Ejutar

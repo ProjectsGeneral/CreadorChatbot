@@ -1,7 +1,4 @@
-class Config:
-    SECRET_KEY = 'B!1w8NAt1T^%kvhUI*S^'
-
-class DevlopmentConnfig(Config):
+class DevelopmentConfig():
     DEBUG = True
     MYSQL_HOST = 'localhost'
     MYSQL_PORT = 3306
@@ -10,5 +7,5 @@ class DevlopmentConnfig(Config):
     MYSQL_DB = 'chatbot'
 
 config = {
-    'development': DevlopmentConnfig
+    'development': DevelopmentConfig
 }

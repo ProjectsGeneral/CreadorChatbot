@@ -1,16 +1,15 @@
-{% extends './base.html' %} 
-{% block title %}Home{% endblock %} 
+{% extends './base.html' %}
+{% block title %}Home{% endblock %}
 {% block body %}
 <div class="row p-0 m-0">
     <div class="col-2 p-0">
       {% include './views/components/navbar.html' %}
     </div>
     <div class="col-10">
-      <div class="containner bg-primry">
-        <p> corrido {{current_user.Nombre}} , {{current_user.NombreEmpresa}}</p>
+      <div class="container bg-primary">
+        <p>Hola, Nombre</p>
+        <p>Correo: Correo</p>
       </div>
-  </div>
-  
+    </div>
 </div>
-
 {% endblock %}

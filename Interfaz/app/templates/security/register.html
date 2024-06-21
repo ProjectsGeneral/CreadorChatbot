@@ -1,6 +1,6 @@
 {% extends './base.html' %} 
 
-{%block title%}Login{% endblock %} 
+{% block title %}Registro{% endblock %} 
 
 {% block customCSS %}
 <link
@@ -10,7 +10,6 @@ href="{{ url_for('static', filename='css/login-register.css')}}"
 {% endblock %}
 
 {% block body %}
-
 
 <div class="d-flex align-items-center justify-content-center vh-100">
   <div
@@ -25,46 +24,50 @@ href="{{ url_for('static', filename='css/login-register.css')}}"
     <div class="card-body">
       <div class="text-center mb-4">
         <img src="https://via.placeholder.com/100" alt="Logo" class="mb-3" />
-        <h3 class="card-title text-white">{{data.titulo}}</h3>
+        <h3 class="card-title text-white">{{ data.titulo }}</h3>
       </div>
-      <form>
+
+      <!-- Mensajes flash -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('registrarse') }}">
         <div class="row">
           <div class="col-12 col-md-6">
             <div class="form-group mb-2">
-              <label for="name" class="text-white">{{data.Nombre}}</label>
-              <input type="name" class="form-control" id="name" name="name" required />
+              <label for="name" class="text-white">{{ data.Nombre }}</label>
+              <input type="text" class="form-control" id="name" name="nombre" required />
             </div>
           </div>
           <div class="col-12 col-md-6">
             <div class="form-group mb-2">
-              <label for="apellidos" class="text-white"
-                >{{data.Apellidos}}</label
-              >
-              <input
-                type="apellidos"
-                class="form-control"
-                id="apellidos"
-                name="apellidos"
-                required
-              />
+              <label for="apellidos" class="text-white">{{ data.Apellidos }}</label>
+              <input type="text" class="form-control" id="apellidos" name="apellidos" required />
             </div>
           </div>
           <div class="col-12 col-md-6 me-md-2">
             <div class="form-group mb-2">
-              <label for="email" class="text-white">{{data.Correo}}</label>
+              <label for="email" class="text-white">{{ data.Correo }}</label>
               <input type="email" class="form-control" id="email" name="correo" required />
             </div>
           </div>
           <div class="col-12 col-md-6">
             <div class="form-group mb-2">
-              <label for="empresa" class="text-white">{{data.Empresa}}</label>
-              <input type="empresa" class="form-control" id="empresa" name="empresa" required />
+              <label for="empresa" class="text-white">{{ data.Empresa }}</label>
+              <input type="text" class="form-control" id="empresa" name="empresa" required />
             </div>
           </div>
           <div class="col-12 col-md-6">
             <div class="form-group mb-2">
-              <label for="cargo" class="text-white">{{data.Cargo}}</label>
-              <select class="form-select" type="cargo" id="cargo" name="cargo" required>
+              <label for="cargo" class="text-white">{{ data.Cargo }}</label>
+              <select class="form-select" id="cargo" name="cargo" required>
                 <option selected></option>
                 <option value="Gerente de la Empresa">Gerente de la Empresa</option>
                 <option value="Analista">Analista</option>
@@ -73,50 +76,25 @@ href="{{ url_for('static', filename='css/login-register.css')}}"
           </div>
           <div class="col-12 col-md-6">
             <div class="form-group mb-2">
-              <label for="password" class="text-white">{{data.Password}}</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                required
-              />
-            </div>
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="form-group mb-2">
-              <label for="PasswordRepeat" class="text-white"
-                >{{data.PasswordRepeat}}</label
-              >
-              <input
-                type="password"
-                class="form-control"
-                id="PasswordRepeat"
-                name="PasswordRepeat"
-                required
-              />
+              <label for="password" class="text-white">{{ data.Password }}</label>
+              <input type="password" class="form-control" id="password" name="password" required />
             </div>
           </div>
         </div>
 
         <div class="col-12 d-flex justify-content-center">
-          <button
-            type="submit"
-            class="col-12 col-md-4 btn btn-warning btn-block text-black"
-          >
-            Ingresar
+          <button type="submit" class="col-12 col-md-4 btn btn-warning btn-block text-black">
+            Registrarse
           </button>
         </div>
       </form>
       <div class="text-center mt-2">
-        <span class="text-white"
-          >Tienes una cuenta?
-          <a class="text-warning" href="{{ url_for('index') }}"
-            >Ingresa aqui</a
-          ></span
-        >
+        <span class="text-white">¿Ya tienes una cuenta?
+          <a class="text-warning" href="{{ url_for('login') }}">Ingresa aquí</a>
+        </span>
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}
