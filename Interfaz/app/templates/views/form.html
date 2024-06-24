@@ -2,14 +2,102 @@
 {% block title %}Crear Bot{% endblock %}
 {% block body %}
 <div class="row p-0 m-0">
-    <div class="col-2 p-0">
-      {% include './views/components/navbar.html' %}
+  <div class="col-2 p-0">
+    {% include './views/components/navbar.html' %}
+  </div>
+  <div class="col-10 d-flex justify-content-center align-items-center">
+    <div class="container">
+      <form class="row g-3" id="botForm">
+        <div class="row" id="keywordContainer">
+          <div class="col-4 mb-3 text-end d-grid align-items-center">
+            <label for="nombre">Nombre:</label>
+          </div>
+          <div class="col-6 mb-3">
+            <input type="text" id="nombre" class="form-control" name="nombre" />
+          </div>
+
+          <div class="col-4 mb-3 text-end d-grid align-items-center">
+            <label for="saludo">Saludo del Bot:</label>
+          </div>
+          <div class="col-6 mb-3">
+            <textarea
+              id="saludo"
+              class="form-control"
+              rows="4"
+              style="resize: none"
+              name="saludo"
+            ></textarea>
+          </div>
+
+          <div class="col-12 mb-3">
+            <button type="button" class="btn btn-secondary" id="addKeyword">
+              Agregar
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger ms-2"
+              id="removeKeyword"
+            >
+              Eliminar
+            </button>
+          </div>
+
+          <div class="container row" id="defaultKeywords">
+            <div class="col-6 mb-3 text-center">
+              <label for="clave1" class="form-label">Palabra Clave 1</label>
+              <input type="text" class="form-control keyword" name="clave1" />
+            </div>
+
+            <div class="col-6 mb-3 text-center">
+              <label for="contenido1" class="form-label">Contenido 1</label>
+              <input
+                type="text"
+                class="form-control content"
+                name="contenido1"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+          <button type="button" class="btn btn-primary" id="enviar">Enviar</button>
+        </div>
+      </form>
     </div>
-    <div class="col-10">
-      <div class="container bg-primary">
-        <p>Formulario</p>
-        <p>Correo: Correo</p>
-      </div>
-    </div>
+  </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    var keywordCount = 1; // Contador inicial para las palabras clave y contenido
+
+    $("#addKeyword").click(function () {
+      keywordCount++;
+      var html = `
+        <div class="row keyword-row">
+          <div class="col-6 mb-3">
+            <input type="text" class="form-control keyword" name="clave${keywordCount}" />
+          </div>
+          <div class="col-6 mb-3">
+            <input type="text" class="form-control content" name="contenido${keywordCount}" />
+          </div>
+        </div>
+      `;
+      $("#keywordContainer").append(html);
+    });
+
+    $("#removeKeyword").click(function () {
+      if ($(".keyword-row").length > 0) {
+        $(".keyword-row:last").remove();
+        keywordCount--; // Disminuir el contador cuando se elimina una fila
+      }
+    });
+
+    $("#enviar").click(function () {
+      var formData = $("#botForm").serializeArray();
+      console.log(JSON.stringify(formData));
+      // Aquí deberías enviar los datos al servidor
+    });
+  });
+</script>
 {% endblock %}
