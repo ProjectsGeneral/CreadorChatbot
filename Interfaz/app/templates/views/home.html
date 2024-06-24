@@ -1,15 +1,59 @@
 {% extends './base.html' %}
-{% block title %}Home{% endblock %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
 {% block body %}
-<div class="row p-0 m-0">
-    <div class="col-2 p-0">
-      {% include './views/components/navbar.html' %}
-    </div>
-    <div class="col-10">
-      <div class="container bg-primary">
-        <p>Hola, Nombre</p>
-        <p>Correo: Correo</p>
+<div class="row m-0">
+  <div class="col-2 p-0">
+    {% include './views/components/navbar.html' %}
+  </div>
+  <div class="col-10 p-0">
+    <section class="parallax-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-center text-light">
+            <h1 class="display-3">Bienvenido a Chatbotify</h1>
+            <p class="lead">Transforma tu negocio con chatbots inteligentes impulsados por IA.</p>
+            <a href="{{ url_for('formulario') }}" class="btn btn-warning btn-lg">Comienza Ahora</a>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section class="container detail-content py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+          <img src="{{ url_for('static', filename='img/chat_bot.avif') }}" alt="Chatbot Logo"
+            class="img-fluid rounded-circle shadow-lg">
+        </div>
+        <div class="col-md-6 my-auto">
+          <h2 class="mb-4">Transforma tu negocio con chatbots inteligentes</h2>
+          <p class="lead">Chatbotify es la solución definitiva para automatizar tu servicio al cliente, optimizar tus
+            operaciones y mejorar la experiencia de tus usuarios.</p>
+          <a href="{{ url_for('listarbots') }}" class="btn btn-warning btn-lg mt-4">Tus Chatbots</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="parallax-section parallax-2 d-flex align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-center text-light">
+            <h2>Por qué elegir Chatbotify</h2>
+            <ul class="lead text-start">
+              <li>Integración de IA avanzada para respuestas precisas.</li>
+              <li>Personalización de la experiencia del usuario.</li>
+              <li>Optimización continua basada en datos.</li>
+              <li>Soporte técnico dedicado y rápido.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
 {% endblock %}

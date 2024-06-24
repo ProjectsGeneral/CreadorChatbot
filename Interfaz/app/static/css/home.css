@@ -1,0 +1,23 @@
+.parallax-section {
+    background-color: #343a40; 
+    color: #fff; 
+    text-align: center;
+    padding: 100px 0; 
+    margin: 0;
+}
+
+.parallax-section h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.parallax-section p {
+    font-size: 1.5rem;
+    line-height: 2;
+    margin-bottom: 30px;
+}
+
+.parallax-section .btn {
+    margin-top: 30px; 
+}

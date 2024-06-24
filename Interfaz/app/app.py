@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, render_template, redirect, request, url_for, session, flash
 from flask_mysqldb import MySQL
 from config import config
@@ -34,15 +35,34 @@ def validar():
     }
     return render_template('security/validate.html',data=data)
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route('/inicio')
+@login_required
 def inicio():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    
     user_name = session.get('user_name')
     user_email = session.get('user_email')
-    
     return render_template('views/home.html', user_name=user_name, user_email=user_email)
+
+@app.route('/listar-bots')
+@login_required
+def listarbots():
+    user_name = session.get('user_name')
+    user_email = session.get('user_email')
+    return render_template('views/listar-bots.html', user_name=user_name, user_email=user_email)
+
+@app.route('/formulario')
+@login_required
+def formulario():
+    user_name = session.get('user_name')
+    user_email = session.get('user_email')
+    return render_template('views/form.html', user_name=user_name, user_email=user_email)
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])
