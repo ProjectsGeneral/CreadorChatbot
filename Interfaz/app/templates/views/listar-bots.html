@@ -7,8 +7,37 @@
     </div>
     <div class="col-10">
       <div class="container bg-primary">
-        <p>Listar</p>
-        <p>Correo: Correo</p>
+        <h2>Listar Bots</h2>
+        <p>Usuario: {{ user_name }}</p>
+        <p>Correo: {{ user_email }}</p>
+        
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID Bot</th>
+              <th>ID Usuario</th>
+              <th>Nombre</th>
+              <th>Saludo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for bot in bots %}
+              <tr>
+                <td>{{ bot[0] }}</td>
+                <td>{{ bot[1] }}</td>
+                <td>{{ bot[2] }}</td>
+                <td>{{ bot[3] }}</td>
+                <td>
+                  <!-- Aquí puedes colocar enlaces o botones para editar o borrar -->
+                  <a href="">Editar</a>
+                  <a href="">Borrar</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        
       </div>
     </div>
 </div>
