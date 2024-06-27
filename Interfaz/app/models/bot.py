@@ -24,5 +24,17 @@ class Bot:
             self.db.connection.rollback()
             print(f"Error en la inserción del bot: {str(e)}")
             return None
+    
+    def delete_bot(self, bot_id):
+        try:
+            cur = self.db.connection.cursor()
+            cur.execute('DELETE FROM Bots WHERE IdBot = %s', (bot_id,))
+            self.db.connection.commit()
+            cur.close()
+            return True
+        except Exception as e:
+            self.db.connection.rollback()
+            print(f"Error al eliminar el bot {bot_id}: {str(e)}")
+            return False
 
 

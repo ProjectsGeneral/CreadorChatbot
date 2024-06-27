@@ -16,7 +16,7 @@ class AuthController:
                 session['user_id'] = user['IdUsuario']
                 session['user_name'] = user['Nombre']
                 session['user_email'] = user['Correo']
-                flash('¡Inicio de sesión exitoso!', 'success')
+                ## flash('¡Inicio de sesión exitoso!', 'success')
                 return redirect(url_for('inicio'))
             else:
                 flash('Correo o contraseña inválidos', 'danger')

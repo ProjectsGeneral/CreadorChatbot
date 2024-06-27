@@ -58,10 +58,14 @@ def listarbots():
     user_name = session.get('user_name')
     user_email = session.get('user_email')
     
-    # Obtener todos los bots utilizando el controlador BotController
     bots = bot_controller.get_all_bots()
     
     return render_template('views/listar-bots.html', user_name=user_name, user_email=user_email, bots=bots)
+
+@app.route('/eliminar-bot/<int:bot_id>', methods=['POST'])
+@login_required
+def eliminar_bot(bot_id):
+    return bot_controller.eliminar_bot(bot_id)
 
 @app.route('/formulario', methods=['GET', 'POST'])
 @login_required

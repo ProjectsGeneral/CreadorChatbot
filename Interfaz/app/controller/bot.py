@@ -54,3 +54,22 @@ class BotController:
             'Contenido': 'Contenido de la Palabra Clave',
         }
         return render_template('views/form.html', data=data)
+    
+    def eliminar_bot(self, bot_id):
+        try:
+            success_keywords = self.pclave_model.delete_pclaves_by_bot(bot_id)
+            if not success_keywords:
+                raise Exception('Error al eliminar las palabras clave del bot')
+
+            success_bot = self.bot_model.delete_bot(bot_id)
+            if not success_bot:
+                raise Exception('Error al eliminar el bot principal')
+
+            flash('¡Bot eliminado exitosamente!', 'success')
+            return redirect(url_for('listarbots'))
+
+        except Exception as e:
+            error_message = 'Hubo un problema al intentar eliminar el bot'
+            flash(error_message, 'danger')
+            self.logger.error(f'{error_message}: {str(e)}')
+            return redirect(url_for('listarbots'))

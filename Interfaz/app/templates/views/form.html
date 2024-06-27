@@ -1,6 +1,10 @@
 {% extends './base.html' %}
 {% block title %}Crear Bot{% endblock %}
 {% block body %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form-bot.css') }}">
+{% endblock %}
+
 <div class="row p-0 m-0">
   <div class="col-2 p-0">
     {% include './views/components/navbar.html' %}
@@ -20,6 +24,7 @@
             </div>
           {% endif %}
         {% endwith %}
+        <h1>Crea tu Chat Bot</h1>
         <div class="row" id="keywordContainer">
           <div class="col-4 mb-3 text-end d-grid align-items-center">
             <label for="nombre">Nombre:</label>
@@ -32,12 +37,12 @@
             <label for="saludo">Saludo del Bot:</label>
           </div>
           <div class="col-6 mb-3">
-            <textarea id="saludo" class="form-control" rows="4" style="resize: none" name="saludo"></textarea>
+            <textarea id="saludo" class="form-control" rows="4" name="saludo"></textarea>
           </div>
 
           <div class="col-12 mb-3">
-            <button type="button" class="btn btn-secondary" id="addKeyword">Agregar</button>
-            <button type="button" class="btn btn-danger ms-2" id="removeKeyword">Eliminar</button>
+            <button type="button" class="btn btn-secondary btn-add" id="addKeyword">Agregar</button>
+            <button type="button" class="btn btn-danger btn-add ms-2" id="removeKeyword">Eliminar</button>
           </div>
 
           <div class="container row" id="defaultKeywords">
@@ -53,7 +58,7 @@
           </div>
         </div>
         <div class="col-12 d-flex justify-content-center">
-          <button type="submit" class="btn btn-primary" id="enviar">Enviar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
         </div>
       </form>
     </div>
