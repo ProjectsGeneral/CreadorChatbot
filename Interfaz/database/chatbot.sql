@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 25-06-2024 a las 17:19:38
+-- Tiempo de generación: 27-06-2024 a las 23:30:57
 -- Versión del servidor: 8.4.0
 -- Versión de PHP: 8.2.8
 
@@ -39,11 +39,8 @@ CREATE TABLE `Bots` (
 --
 
 INSERT INTO `Bots` (`IdBot`, `IdUsuario`, `Nombre`, `Saludo`) VALUES
-(1, 8, 'Josue2', '1234'),
-(2, 8, 'testeo', 'saludo de testeo'),
-(3, 8, '2do testeo', 'testeo2'),
-(4, 8, '1', '1'),
-(5, 8, 'abc', 'dfg');
+(11, 7, 'dsadas', 'dsadsa'),
+(12, 7, 'fdsfds', 'fdsfds');
 
 -- --------------------------------------------------------
 
@@ -63,17 +60,10 @@ CREATE TABLE `PClaveBot` (
 --
 
 INSERT INTO `PClaveBot` (`IdPClave`, `IdBot`, `Clave`, `Contenido`) VALUES
-(1, 1, 'telefono', 'test 982531296'),
-(2, 2, 'telefono', 'test 982531296'),
-(3, 2, 'direccion', 'av industrial'),
-(4, 2, 'ciudad', 'Tacna - Tacna'),
-(5, 3, 'palabra clave 1', 'contenido 1'),
-(6, 3, 'palabra clave 2', 'contenido 2'),
-(7, 4, '1', '1'),
-(8, 4, '2', '2'),
-(9, 5, '123', '123'),
-(10, 5, '123', '123'),
-(11, 5, '123', '123');
+(22, 11, 'dsadsa', 'dsdsa'),
+(23, 11, 'dsadsa', 'dsad'),
+(24, 12, 'fdsfds', 'fdsfds'),
+(25, 12, 'fdsfds', 'fdsfds');
 
 -- --------------------------------------------------------
 
@@ -131,13 +121,13 @@ ALTER TABLE `Usuario`
 -- AUTO_INCREMENT de la tabla `Bots`
 --
 ALTER TABLE `Bots`
-  MODIFY `IdBot` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `IdBot` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `PClaveBot`
 --
 ALTER TABLE `PClaveBot`
-  MODIFY `IdPClave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `IdPClave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `Usuario`
