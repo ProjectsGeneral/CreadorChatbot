@@ -23,6 +23,7 @@ pip install flask-mysqldb
 pip install flask-login
 pip install flask-WTF
 pip install bcrypt
+pip install requests
 
 
 Ejutar

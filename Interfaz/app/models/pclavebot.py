@@ -29,4 +29,3 @@ class PClaveBot:
             self.db.connection.rollback()
             print(f"Error al eliminar palabras clave del bot {bot_id}: {str(e)}")
             return False
-    

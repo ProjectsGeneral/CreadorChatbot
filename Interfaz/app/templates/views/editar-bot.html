@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Editar Bot{% endblock %}
+{% block body %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form-bot.css') }}">
+{% endblock %}
+
+<form method="POST" action="{{ url_for('editar_bot', bot_id=data.IdBot) }}">
+    <div class="row p-0 m-0">
+        <div class="col-2 p-0">
+            {% include './views/components/navbar.html' %}
+        </div>
+        <div class="col-10 d-flex justify-content-center align-items-center">
+            <div class="container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+                <a href="{{ url_for('listarbots') }}" class="btn btn-outline-alert d-flex align-items-center" style="width:90px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path
+                            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+
+                    </svg>
+                    <span>Atras</span>
+                </a>
+                <h1>Editar Bot</h1>
+                <div class="row">
+                    <div class="col">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" class="form-control" name="nombre" value="{{ data.Nombre }}">
+                    </div>
+                    <div class="col">
+                        <label for="saludo">Saludo del Bot:</label>
+                        <textarea id="saludo" class="form-control" rows="4" name="saludo">{{ data.Saludo }}</textarea>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-grid ">
+                    <h2>Informacion Extra</h2>
+                    <div class="row mb-3 text-center">
+                        <div class="col-4">
+                            <label>Palabra Clave</label>
+                        </div>
+                        <div class="col-6">
+                            <label>Contenido</label>
+                        </div>
+                    </div>
+                    <div id="palabras-clave-container">
+                        {% for pclave in data.pclaves %}
+                        <div class="row mb-3 pclave-row">
+                            <div class="col-4">
+                                <input type="text" id="clave_{{ pclave.IdPClave }}" class="form-control"
+                                    name="clave_{{ pclave.IdPClave }}" value="{{ pclave.Clave }}">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" id="contenido_{{ pclave.IdPClave }}" class="form-control"
+                                    name="contenido_{{ pclave.IdPClave }}" value="{{ pclave.Contenido }}">
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-danger btn-remove">Eliminar</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6 text-start">
+                            <button type="button" class="btn btn-secondary" id="add-input">Añadir Palabra Clave</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#add-input').click(function () {
+            var newId = new Date().getTime();
+            $('#palabras-clave-container').append(`
+                <div class="row mb-3 pclave-row">
+                    <div class="col-4">
+                        <input type="text" id="clave_${newId}" class="form-control" name="clave_${newId}" value="">
+                    </div>
+                    <div class="col-6">
+                        <input type="text" id="contenido_${newId}" class="form-control" name="contenido_${newId}" value="">
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-danger btn-remove">Eliminar</button>
+                    </div>
+                </div>
+            `);
+        });
+
+        $(document).on('click', '.btn-remove', function () {
+            var rows = $('#palabras-clave-container .pclave-row').length;
+            if (rows > 1) {
+                $(this).closest('.pclave-row').remove();
+            } else {
+                alert('Debe haber al menos un par de inputs de Palabra Clave y Contenido.');
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -3,7 +3,8 @@ from flask import Flask, render_template, redirect, request, url_for, session, f
 from flask_mysqldb import MySQL
 from config import config
 from controller.autenticacion import AuthController
-from controller.bot import BotController
+from controller.botController import BotController
+from controller.userController import UserController
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Solo para produccion
@@ -11,6 +12,7 @@ app.secret_key = 'your_secret_key'  # Solo para produccion
 db = MySQL(app)
 auth_controller = AuthController(db)
 bot_controller = BotController(db)
+user_controller = UserController(db)
 
 @app.route('/')
 def index():
@@ -27,15 +29,6 @@ def registrarse():
 @app.route('/logout')
 def logout():
     return auth_controller.logout()
-
-@app.route('/validar')
-def validar():
-    data = {
-        'titulo':'Ingresa un correo electronico valido',
-        'Correo':'Correo electronico',
-        'Codigo':'Codigo',
-    }
-    return render_template('security/validate.html',data=data)
 
 def login_required(f):
     @wraps(f)
@@ -67,10 +60,34 @@ def listarbots():
 def eliminar_bot(bot_id):
     return bot_controller.eliminar_bot(bot_id)
 
+@app.route('/editar-bot/<int:bot_id>', methods=['GET', 'POST'])
+@login_required
+def editar_bot(bot_id):
+    if request.method == 'POST':
+        return bot_controller.actualizar_datos_bot(bot_id)
+    else:
+        return bot_controller.mostrar_datos_bot_pclavesbot(bot_id)
+    
+@app.route('/ver-bot/<int:bot_id>', methods=['GET'])
+@login_required
+def ver_bot(bot_id):
+    return bot_controller.mostrar_datos_completos(bot_id)
+
 @app.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
     return bot_controller.create_bot(request)
+
+
+@app.route('/perfil/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def perfil(user_id):
+    if request.method == 'POST':
+        return user_controller.editar_contraseña(request, user_id)
+    else:
+        return user_controller.mostrar_datos_usuario(user_id)
+
+
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])

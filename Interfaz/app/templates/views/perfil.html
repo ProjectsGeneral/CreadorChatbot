@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil de {{ user.Nombre }}{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 p-0">
+            {% include './views/components/navbar.html' %}
+        </div>
+        <div class="col-md-10">
+            <div class="custom-container">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Información del Usuario</h5>
+                        <p class="card-text"><strong>Nombre:</strong> {{ user.Nombre }}</p>
+                        <p class="card-text"><strong>Correo:</strong> {{ user.Correo }}</p>
+                        <p class="card-text"><strong>Empresa:</strong> {{ user.NombreEmpresa }}</p>
+                        <p class="card-text"><strong>Cargo:</strong> {{ user.Cargo }}</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">¿Deseas cambiar tu Contraseña?</h5>
+                        
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div id="flash-messages">
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+
+                        <form method="POST" action="{{ url_for('perfil', user_id=user.IdUsuario) }}" class="password-form">
+                            <div class="mb-3">
+                                <label for="current_password" class="form-label">Contraseña Actual</label>
+                                <input type="password" class="form-control" id="current_password" name="current_password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="new_password" class="form-label">Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="new_password" name="new_password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirmar Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function() {
+        document.getElementById('flash-messages').style.display = 'none';
+    }, 2000);
+</script>
+
+{% endblock %}

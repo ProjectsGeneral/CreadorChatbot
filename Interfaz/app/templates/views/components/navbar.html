@@ -26,12 +26,11 @@
   <hr class="mt-auto mb-4">
   <div class="dropdown">
     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-      <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
       <strong class="text-truncate" style="max-width: 150px;">{{ session['user_email'] }}</strong>
     </a>
     <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-      <li><a class="dropdown-item" href="#">Opciones</a></li>
-      <li><a class="dropdown-item" href="#">Perfil</a></li>
+      <!-- <li><a class="dropdown-item" href="#">Opciones</a></li> -->
+      <li><a class="dropdown-item" href="{{ url_for('perfil', user_id=session['user_id']) }}">Perfil</a></li>
       <li><hr class="dropdown-divider"></li>
       <li><a class="dropdown-item" href="{{ url_for('logout') }}">Salir</a></li>
     </ul>

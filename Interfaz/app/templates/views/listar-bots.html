@@ -1,5 +1,5 @@
-{% extends 'base.html' %} 
-{% block title %}Listar Bots{% endblock %} 
+{% extends 'base.html' %}
+{% block title %}Listar Bots{% endblock %}
 
 {% block customCSS %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/listar-bots.css') }}">
@@ -8,7 +8,7 @@
 {% block body %}
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-2 p-0" >
+    <div class="col-md-2 p-0">
       {% include './views/components/navbar.html' %}
     </div>
     <div class="col-md-10">
@@ -18,19 +18,18 @@
         <p>Correo: {{ user_email }}</p>
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-          <div id="flash-message" class="alert alert-success alert-dismissible fade show" role="alert">
-            {% for category, message in messages %}
-              {{ message }}
-            {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
+        <div id="flash-message" class="alert alert-success alert-dismissible fade show" role="alert">
+          {% for category, message in messages %}
+          {{ message }}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         {% endif %}
-      {% endwith %}
+        {% endwith %}
         <div class="table-responsive">
           <table class="table table-striped">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">ID Bot</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Saludo</th>
                 <th scope="col">Despliegue</th>
@@ -40,24 +39,26 @@
             <tbody>
               {% for bot in bots %}
               <tr>
-                <td>{{ bot[0] }}</td>
                 <td>{{ bot[2] }}</td>
                 <td>{{ bot[3] }}</td>
-                <td></td>
+                <td>{{ bot[4] }}</td>
                 <td>
-                  <a href="#" class="btn btn-primary btn-sm mr-1">Editar</a>
+                  <a href="{{ url_for('editar_bot', bot_id=bot[0]) }}" class="btn btn-primary btn-sm mr-1">Editar</a>
+                  <a href="{{ url_for('ver_bot', bot_id=bot[0]) }}" class="btn btn-info btn-sm mr-1">Ver</a>
                   <form action="{{ url_for('eliminar_bot', bot_id=bot[0]) }}" method="post" style="display: inline;">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de querer eliminar este bot?')">Borrar</button>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                      onclick="return confirm('¿Estás seguro de querer eliminar este bot?')">Borrar</button>
                   </form>
                 </td>
               </tr>
               {% endfor %}
+
             </tbody>
           </table>
         </div>
 
-       
-        
+
+
       </div>
     </div>
   </div>
@@ -65,7 +66,7 @@
 
 <script>
   // Ocultar el mensaje flash después de 2 segundos
-  setTimeout(function() {
+  setTimeout(function () {
     $('#flash-message').fadeOut('slow');
   }, 2000);
 </script>
