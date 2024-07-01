@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 27-06-2024 a las 23:30:57
+-- Tiempo de generación: 01-07-2024 a las 20:39:33
 -- Versión del servidor: 8.4.0
 -- Versión de PHP: 8.2.8
 
@@ -31,16 +31,17 @@ CREATE TABLE `Bots` (
   `IdBot` int NOT NULL,
   `IdUsuario` int NOT NULL,
   `Nombre` varchar(50) NOT NULL,
-  `Saludo` text NOT NULL
+  `Saludo` text NOT NULL,
+  `Despliegue` varchar(50) NOT NULL,
+  `Puerto` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `Bots`
 --
 
-INSERT INTO `Bots` (`IdBot`, `IdUsuario`, `Nombre`, `Saludo`) VALUES
-(11, 7, 'dsadas', 'dsadsa'),
-(12, 7, 'fdsfds', 'fdsfds');
+INSERT INTO `Bots` (`IdBot`, `IdUsuario`, `Nombre`, `Saludo`, `Despliegue`, `Puerto`) VALUES
+(64, 9, 'BotTest', 'Kalpten. ¡Qué alegría verte por aquí!', 'http://159.89.107.90:4000/qr', 4000);
 
 -- --------------------------------------------------------
 
@@ -60,10 +61,7 @@ CREATE TABLE `PClaveBot` (
 --
 
 INSERT INTO `PClaveBot` (`IdPClave`, `IdBot`, `Clave`, `Contenido`) VALUES
-(22, 11, 'dsadsa', 'dsdsa'),
-(23, 11, 'dsadsa', 'dsad'),
-(24, 12, 'fdsfds', 'fdsfds'),
-(25, 12, 'fdsfds', 'fdsfds');
+(97, 64, 'Telefono', '982531296');
 
 -- --------------------------------------------------------
 
@@ -86,8 +84,7 @@ CREATE TABLE `Usuario` (
 --
 
 INSERT INTO `Usuario` (`IdUsuario`, `Nombre`, `Apellidos`, `Correo`, `NombreEmpresa`, `Cargo`, `Password`) VALUES
-(7, '1', '2', '1@hotmail.com', '1', 'Analista', '$2b$12$VT1od2PbNS8dTe0bJyZoF.KqQUgmqaePjsPHdb.nvOowOj2ERjPzO'),
-(8, 'Josue', 'Chambilla Zuñiga ', 'josue.200297@hotmail.com', 'Universidad Privada de Tacna', 'Analista', '$2b$12$pdBBjDHaV/Q5kFbfiuPMIu6Fb2ByFSUUjiumdUuEK.o4tZmaJqY9m');
+(9, 'Josue', 'Chambilla Zuñiga ', 'josue.200297@hotmail.com', 'Universidad Privada de Tacna', 'Analista', '$2b$12$Tuy/hjVfoDcOy7j/KqotH.6.jIxnBkFHtt2N.662Vayis9BfAh8b6');
 
 --
 -- Índices para tablas volcadas
@@ -121,19 +118,19 @@ ALTER TABLE `Usuario`
 -- AUTO_INCREMENT de la tabla `Bots`
 --
 ALTER TABLE `Bots`
-  MODIFY `IdBot` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `IdBot` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT de la tabla `PClaveBot`
 --
 ALTER TABLE `PClaveBot`
-  MODIFY `IdPClave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `IdPClave` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT de la tabla `Usuario`
 --
 ALTER TABLE `Usuario`
-  MODIFY `IdUsuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `IdUsuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
