@@ -1,43 +1,23 @@
-FROM ubuntu:16.04
+# Use the official Python image as a base image
+FROM python:3.9-slim
 
-# Instalación de Apache y Python3
-RUN apt-get update -y && apt-get install -y \
-        apache2 \
-        libapache2-mod-wsgi-py3 \
-        python3-pip \
-        && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-# Copiar la aplicación Interfaz al directorio html
-ADD /Interfaz /var/www/html/Interfaz
+# Set the working directory in the container
+WORKDIR /
 
-# Cambiar propietario de los archivos al usuario www-data
-RUN chown www-data:www-data -R /var/www/html/Interfaz
+# Install dependencies
+COPY .requirements.txt requirements.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Instalar las dependencias de Python
-RUN pip3 install -r /var/www/html/Interfaz/requirements.txt
+# Copy the rest of the application code to the container
+COPY ./app /app
 
-# Agregar la configuración de Apache
-ADD 000-default.conf /etc/apache2/sites-available/
+# Expose port 5000 (assuming your Flask app runs on port 5000)
+EXPOSE 5000
 
-# Agregar el archivo app.wsgi
-ADD app.wsgi /var/www/html/Interfaz
-
-# Reiniciar el servicio de Apache
-RUN service apache2 restart
-
-# Configurar variables de entorno de Apache
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-
-# Exponer el puerto 80
-EXPOSE 80
-
-# Establecer el directorio de trabajo
-WORKDIR /var/www/html/Interfaz
-
-# Copiar el script run.sh
-COPY ./run.sh /
-
-# Establecer el punto de entrada para ejecutar el script run.sh
-ENTRYPOINT ["/run.sh"]
+# Command to run the Flask application
+CMD ["python", "./app/app.py"]
