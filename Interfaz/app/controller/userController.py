@@ -23,13 +23,11 @@ class UserController:
                 flash('Todos los campos son requeridos.', 'danger')
                 return redirect(url_for('perfil', user_id=user_id))
 
-            # Verificar que la contraseña actual coincida
             user = self.user_model.get_user_by_id(user_id)
             if not user or not bcrypt.checkpw(current_password.encode('utf-8'), user['Password'].encode('utf-8')):
                 flash('La contraseña actual es incorrecta.', 'danger')
                 return redirect(url_for('perfil', user_id=user_id))
 
-            # Verificar que la nueva contraseña y la confirmación coincidan
             if new_password != confirm_password:
                 flash('La nueva contraseña y la confirmación no coinciden.', 'danger')
                 return redirect(url_for('perfil', user_id=user_id))
