@@ -64,23 +64,3 @@ Instalar PhpMyAdmin en Docker
 
 3. Acceder a phpMyAdmin: http://localhost:8080
 
-
-
-POSIBLE BD
-
-
-CREATE TABLE bots (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    saludo TEXT
-);
-
-
-
-CREATE TABLE palabras_clave_contenido (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    bot_id INT,
-    clave VARCHAR(255) NOT NULL,
-    contenido TEXT,
-    FOREIGN KEY (bot_id) REFERENCES bots(id) ON DELETE CASCADE
-);

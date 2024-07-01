@@ -32,7 +32,8 @@
               <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Saludo</th>
-                <th scope="col">Despliegue</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Puerto</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -41,7 +42,8 @@
               <tr>
                 <td>{{ bot[2] }}</td>
                 <td>{{ bot[3] }}</td>
-                <td>{{ bot[4] }}</td>
+                <td>Desplegado</td>
+                <td>{{ bot[5] }}</td>
                 <td>
                   <a href="{{ url_for('editar_bot', bot_id=bot[0]) }}" class="btn btn-primary btn-sm mr-1">Editar</a>
                   <a href="{{ url_for('ver_bot', bot_id=bot[0]) }}" class="btn btn-info btn-sm mr-1">Ver</a>

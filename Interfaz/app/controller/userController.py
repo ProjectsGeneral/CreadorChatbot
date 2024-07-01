@@ -34,10 +34,8 @@ class UserController:
                 flash('La nueva contraseña y la confirmación no coinciden.', 'danger')
                 return redirect(url_for('perfil', user_id=user_id))
 
-            # Hashear la nueva contraseña
             hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
 
-            # Actualizar la contraseña del usuario en la base de datos
             success = self.user_model.update_user_password(user_id, hashed_password.decode('utf-8'))
 
             if success:

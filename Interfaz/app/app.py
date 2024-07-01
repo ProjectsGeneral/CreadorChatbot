@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import Flask, render_template, redirect, request, url_for, session, flash
+from flask import Flask, Response, render_template, redirect, request, url_for, session, flash
 from flask_mysqldb import MySQL
 from config import config
 from controller.autenticacion import AuthController
@@ -76,7 +76,24 @@ def ver_bot(bot_id):
 @app.route('/formulario', methods=['GET', 'POST'])
 @login_required
 def formulario():
-    return bot_controller.create_bot(request)
+    if request.method == 'POST':
+        result = bot_controller.create_bot(request)
+        if isinstance(result, str):
+            return result  
+        elif isinstance(result, tuple):
+            return result  
+        elif isinstance(result, Response):
+            return result  
+        else:
+            return redirect(url_for('formulario')) 
+    else:
+        data = {
+            'Nombre': 'Nombre del Bot',
+            'Saludo': 'Saludo del Bot',
+            'Clave': 'Palabra Clave',
+            'Contenido': 'Contenido de la Palabra Clave',
+        }
+        return render_template('views/form.html', data=data)
 
 
 @app.route('/perfil/<int:user_id>', methods=['GET', 'POST'])

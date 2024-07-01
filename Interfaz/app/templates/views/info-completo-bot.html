@@ -30,7 +30,8 @@
                                 </a>
                                 <h2 class="card-title text-center">{{ data['Nombre'] }}</h2>
                                 <p class="card-text"><strong>Saludo Inicial:</strong> {{ data['Saludo'] }}</p>
-                                <p class="card-text"><strong>Despliegue:</strong> {{ data['Despliegue'] }}</p>
+                                <p class="text-center" style="font-size: 24px;"><strong>Escanea el QR para empezar:</strong></p>
+                                <p class="card-text text-center"> <img src="{{ data['Despliegue'] }}" alt="Url-Bot"></p>
 
                                 <h4 class="card-subtitle mb-2 text-muted">Informacion Extra</h4>
                                 <table class="table table-bordered">
@@ -49,10 +50,6 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="card-footer text-center">
-                                <a href="{{ url_for('listarbots') }}" class="btn btn-secondary">Volver a la lista de
-                                    Bots</a>
                             </div>
                         </div>
                     </div>

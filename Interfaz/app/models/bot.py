@@ -10,21 +10,52 @@ class Bot:
         bots = cursor.fetchall()
         cursor.close()
         return bots
-
-    def create_bot(self, user_id, nombre, saludo, despliegue):
+    
+    def update_saludo(self, bot_id, nuevo_saludo):
         try:
+            cursor = self.db.connection.cursor()
+            sql = "UPDATE Bots SET Saludo = %s WHERE IdBot = %s"
+            cursor.execute(sql, (nuevo_saludo, bot_id))
+            self.db.connection.commit()
+            cursor.close()
+            return True
+        
+        except Exception as e:
+            self.db.connection.rollback()
+            print(f'Hubo un problema durante el proceso de actualización del saludo: {str(e)}')
+            return False
+    
+    def get_last_used_port(self):
+        try:
+            cursor = self.db.connection.cursor()
+            cursor.execute("SELECT MAX(Puerto) FROM Bots")
+            last_port = cursor.fetchone()[0]
+            cursor.close()
+            return last_port
+
+        except Exception as e:
+            print(f"Error al obtener el último puerto utilizado: {str(e)}")
+            return None
+
+    def create_bot(self, user_id, nombre, saludo, despliegue, puerto=None):
+        try:
+            if puerto is None:
+                last_port = self.get_last_used_port() or 4000
+                puerto = last_port + 1
+
             cur = self.db.connection.cursor()
-            cur.execute('INSERT INTO Bots (IdUsuario, Nombre, Saludo, Despliegue) VALUES (%s, %s, %s, %s)',
-                        (user_id, nombre, saludo, despliegue))
+            cur.execute('INSERT INTO Bots (IdUsuario, Nombre, Saludo, Despliegue, Puerto) VALUES (%s, %s, %s, %s, %s)',
+                        (user_id, nombre, saludo, despliegue, puerto))
             bot_id = cur.lastrowid
             self.db.connection.commit()
             cur.close()
             return bot_id
+
         except Exception as e:
             self.db.connection.rollback()
             print(f"Error en la inserción del bot: {str(e)}")
             return None
-    
+     
     def delete_bot(self, bot_id):
         try:
             cur = self.db.connection.cursor()
@@ -77,7 +108,6 @@ class Bot:
         finally:
             cursor.close()
 
-
     def update_bot_and_keywords(self, bot_id, nombre, saludo, pclaves_data, despliegue):
         try:
             cursor = self.db.connection.cursor()
@@ -109,3 +139,31 @@ class Bot:
 
         finally:
             cursor.close()
+
+    def get_bot(self, bot_id):
+        try:
+            cursor = self.db.connection.cursor()
+            cursor.execute("""
+                SELECT * FROM Bots
+                WHERE IdBot = %s
+            """, (bot_id,))
+            bot_data = cursor.fetchone()
+            cursor.close()
+
+            if bot_data:
+                bot = {
+                    'IdBot': bot_data[0],
+                    'IdUsuario': bot_data[1],
+                    'Nombre': bot_data[2],
+                    'Saludo': bot_data[3],
+                    'Despliegue': bot_data[4],
+                    'Puerto': bot_data[5]  # Agregar otros campos si es necesario
+                }
+                return bot
+            else:
+                return None
+
+        except Exception as e:
+            print(f"Error al obtener el bot {bot_id}: {str(e)}")
+            return None
+    

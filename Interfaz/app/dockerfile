@@ -1,12 +1,31 @@
-from python:3.9-slim
+# Usamos una imagen base de Python para Flask
+FROM python:3.9-slim
 
-WORKDIR /usr/src/app
+# Establecemos el directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-COPY requirements.txt ./
+# Copiamos los archivos necesarios al contenedor (app.py, config.py, y otros)
+COPY app.py /app/
+COPY config.py /app/
+COPY controller /app/controller/
+COPY templates /app/templates/
+COPY static /app/static/
+COPY requirements.txt /app/
+
+# Instalamos las dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . . 
+# Instalamos MySQL client para Python
+RUN apt-get update && apt-get install -y default-mysql-client
 
+# Instalamos PhpMyAdmin
+RUN apt-get install -y phpmyadmin
+
+# Configuramos PhpMyAdmin para conectarse a MySQL
+RUN echo 'Include /etc/phpmyadmin/apache.conf' >> /etc/apache2/apache2.conf
+
+# Exponemos el puerto en el que Flask se ejecutará (puerto 5000)
 EXPOSE 5000
 
-CMD ["python", "./app.py"]
+# Comando para ejecutar la aplicación cuando se inicie el contenedor
+CMD ["python", "app.py"]

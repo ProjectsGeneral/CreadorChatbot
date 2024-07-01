@@ -13,6 +13,7 @@ class BotController:
     def get_all_bots(self):
         return self.bot_model.get_all_bots()
 
+        
     def create_bot(self, request):
         if request.method == 'POST':
             nombre = request.form.get('nombre')
@@ -20,13 +21,11 @@ class BotController:
             user_id = session.get('user_id')
 
             try:
-                api_url = 'https://random-word-api.herokuapp.com/word'
-                response = requests.get(api_url)
-                random_word = response.json()[0] 
+                last_port = self.bot_model.get_last_used_port() or 3999
+                next_port = last_port + 1
+                qr_url = f'http://159.89.107.90:{next_port}/qr'
 
-                despliegue = random_word
-
-                bot_id = self.bot_model.create_bot(user_id, nombre, saludo, despliegue)
+                bot_id = self.bot_model.create_bot(user_id, nombre, saludo, qr_url, next_port)
                 if not bot_id:
                     raise Exception('Error al crear el bot en la base de datos')
 
@@ -45,17 +44,22 @@ class BotController:
                     if not pclave_id:
                         raise Exception(f'Error al crear la palabra clave "{clave}" para el bot ID {bot_id}')
 
-                flash('¡Bot creado exitosamente!', 'success')
+                nuevo_saludo = self.enviar_datos_servicio_externo(bot_id, nombre, saludo, keywords, next_port, qr_url)
+                if nuevo_saludo:
+                    print("Nuevo saludo obtenido:", nuevo_saludo)
+                    self.bot_model.update_saludo(bot_id, nuevo_saludo)
+
+                flash('¡Bot creado y datos enviados al servicio externo exitosamente!', 'success')
                 return redirect(url_for('formulario'))
 
             except requests.RequestException as e:
-                error_message = f'Error al obtener la palabra aleatoria desde la API: {str(e)}'
+                error_message = f'Error al enviar los datos al servicio externo: {str(e)}'
                 flash(error_message, 'danger')
                 self.logger.error(error_message)
                 return redirect(url_for('formulario'))
 
             except Exception as e:
-                error_message = 'Hubo un problema durante la creación del bot'
+                error_message = f'Hubo un problema durante la creación del bot y el envío de datos al servicio externo: {str(e)}'
                 flash(error_message, 'danger')
                 self.logger.error(f'{error_message}: {str(e)}')
                 return redirect(url_for('formulario'))
@@ -67,9 +71,64 @@ class BotController:
             'Contenido': 'Contenido de la Palabra Clave',
         }
         return render_template('views/form.html', data=data)
+
+    def enviar_datos_servicio_externo(self, bot_id, nombre, saludo, keywords, port, qr_url):
+        if bot_id:
+            try:
+                service_url = 'http://159.89.107.90:5003/bot'
+                headers = {'Content-Type': 'application/json'}
+
+                data_to_send = {
+                    "containerName": nombre,
+                    "port": port,
+                    "qr_url": qr_url,
+                    "keywords": []
+                }
+
+                data_to_send["keywords"].append({
+                    "keyword": "hola",
+                    "content": saludo
+                })
+
+                for keyword in keywords:
+                    data_to_send["keywords"].append({
+                        "keyword": keyword['clave'],
+                        "content": keyword['contenido']
+                    })
+
+                data_to_send["keywords"] = [kw for kw in data_to_send["keywords"] if kw["keyword"] and kw["content"]]
+
+                response = requests.post(service_url, json=data_to_send, headers=headers)
+                
+                response_data = response.json() 
+                openai_response = response_data.get('openAIResponse', {})
+                keywords = openai_response.get('keywords', [])
+                nuevo_saludo = keywords[0].get('content') if keywords else None
+
+                return nuevo_saludo  # Devolver el nuevo saludo obtenido desde el servicio externo
+
+            except requests.RequestException as e:
+                error_message = f'Error al enviar los datos al servicio externo: {str(e)}'
+                self.logger.error(error_message)
+                return None
+
+            except Exception as e:
+                error_message = 'Hubo un problema durante el envío de datos al servicio externo'
+                self.logger.error(f'{error_message}: {str(e)}')
+                return None
+
+        else:
+            self.logger.error('No se pudo obtener el ID del bot creado en la base de datos local')
+            return None
     
     def eliminar_bot(self, bot_id):
         try:
+            bot = self.bot_model.get_bot(bot_id) 
+            if not bot:
+                raise Exception('Bot no encontrado en la base de datos')
+
+            container_name = bot['Nombre'] 
+
             success_keywords = self.pclave_model.delete_pclaves_by_bot(bot_id)
             if not success_keywords:
                 raise Exception('Error al eliminar las palabras clave del bot')
@@ -78,14 +137,21 @@ class BotController:
             if not success_bot:
                 raise Exception('Error al eliminar el bot principal')
 
-            flash('¡Bot eliminado exitosamente!', 'success')
-            return redirect(url_for('listarbots'))
+            service_url = f'http://159.89.107.90:5003/delete-bot/{container_name}'
+            headers = {'Content-Type': 'application/json'}
+            response = requests.delete(service_url, headers=headers)
+
+            if response.status_code == 200:
+                flash('¡Bot eliminado exitosamente del servicio externo y localmente!', 'success')
+            else:
+                flash(f'Error al eliminar el bot del servicio externo. Código de estado: {response.status_code}', 'danger')
 
         except Exception as e:
-            error_message = 'Hubo un problema al intentar eliminar el bot'
+            error_message = f'Hubo un problema al intentar eliminar el bot: {str(e)}'
             flash(error_message, 'danger')
             self.logger.error(f'{error_message}: {str(e)}')
-            return redirect(url_for('listarbots'))
+
+        return redirect(url_for('listarbots'))
         
         
     def mostrar_datos_bot_pclavesbot(self, bot_id):

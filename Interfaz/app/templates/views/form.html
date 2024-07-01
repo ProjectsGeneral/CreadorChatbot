@@ -11,7 +11,7 @@
   </div>
   <div class="col-10 d-flex justify-content-center align-items-center">
     <div class="container">
-      <form class="row g-3" id="botForm" method="POST" action="{{ url_for('formulario') }}">
+      <form class="row g-3" id="botForm" method="POST" onsubmit="return validateForm()">
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             <div class="container mt-3">
@@ -30,14 +30,14 @@
             <label for="nombre">Nombre:</label>
           </div>
           <div class="col-6 mb-3">
-            <input type="text" id="nombre" class="form-control" name="nombre" />
+            <input type="text" id="nombre" class="form-control" name="nombre" required />
           </div>
 
           <div class="col-4 mb-3 text-end d-grid align-items-center">
             <label for="saludo">Saludo del Bot:</label>
           </div>
           <div class="col-6 mb-3">
-            <textarea id="saludo" class="form-control" rows="4" name="saludo"></textarea>
+            <textarea id="saludo" class="form-control" rows="4" name="saludo" placeholder="Coloca el Nombre de tu empresa y un saludo corto" required></textarea>
           </div>
 
           <div class="col-12 mb-3">
@@ -46,15 +46,7 @@
           </div>
 
           <div class="container row" id="defaultKeywords">
-            <div class="col-6 mb-3 text-center">
-              <label for="clave1" class="form-label">Palabra Clave</label>
-              <input type="text" class="form-control keyword" name="clave1" />
-            </div>
-
-            <div class="col-6 mb-3 text-center">
-              <label for="contenido1" class="form-label">Contenido</label>
-              <input type="text" class="form-control content" name="contenido1" />
-            </div>
+            
           </div>
         </div>
         <div class="col-12 d-flex justify-content-center">
@@ -68,14 +60,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function () {
-    var keywordCount = 1;
+    var keywordCount = 0;
 
     $("#addKeyword").click(function () {
       keywordCount++;
       var html = `
         <div class="row keyword-row">
           <div class="col-6 mb-3">
-            <input type="text" class="form-control keyword" name="clave${keywordCount}" />
+            <input type="text" class="form-control keyword" placeholder="Admite solo una palabra(ejem: Telefono , Ciudad, Pais, etc)" name="clave${keywordCount}" />
           </div>
           <div class="col-6 mb-3">
             <input type="text" class="form-control content" name="contenido${keywordCount}" />
@@ -92,13 +84,16 @@
       }
     });
 
-    $("#botForm").submit(function (event) {
-      /* event.preventDefault(); */ // Detener el comportamiento normal del formulario
-      
-      var formData = $(this).serializeArray(); 
-      console.log(JSON.stringify(formData, null, 2));
-    });
-    
+    function validateForm() {
+      var keywordRows = $(".keyword-row");
+
+      if (keywordRows.length === 0) {
+        alert("Por favor, agrega al menos una palabra clave y su contenido.");
+        return false; 
+      }
+
+      return true; 
+    }
   });
 </script>
 {% endblock %}
